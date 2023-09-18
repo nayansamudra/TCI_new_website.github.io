@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+#post-518 {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.entry-header {
+    border-bottom: 3px solid #28303d;
+    padding-bottom: 60px;
+    margin: 30px 91.5px 90px 91.5px;
+}
+
+.alignwide {
+    clear: both;
+}
+
+.entry-title {
+    font-size: 6rem;
+    color: #28303d;
+    overflow-wrap: break-word;
+    clear: both;
+}
+
+h1.entry-title {
+    line-height: 1.1;
+    font-weight: 200;
+}
+
+.entry-content {
+    font-family: 'Outfit', sans-serif;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.entry-content:before {
+    content: "";
+    display: table;
+    table-layout: fixed;
+}
+
+.entry-content {
+    margin: 0px 91.5px;
+}
+
+.entry-content p {
+    word-wrap: break-word;
+    font-size: 1.3rem;
+    color: #28303d;
+    padding-bottom: 15px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.entry-content p a:hover {
+    color: #324ed3 !important;
+}
+
+.entry-content p a {
+    color: #28303d;
+}
+
+
+@media (max-width:651px) {
+    .entry-title {
+        font-size: 4rem;
+    }
+    .entry-header, .entry-content{
+        margin: 0 10px !important;
+    }
+}
