@@ -91,11 +91,10 @@ fetch_blog = () => {
     $('#Blog_title').text(Blog_data[0][1])
     $('#Blog_Date').text(moment.unix(Blog_data[0][0]).format("MMMM DD, YYYY"))
     $('#Blog_img').attr('src', Blog_data[0][3])
-    $('#Blog_Author_Name').text(JSON.parse(Blog_data[0][5])['Author_Name'])
     $('.post-body').text('')
     $('.post-body').html(JSON.parse(Blog_data[0][5])['Blog_Description'])
     for (var i = 0; i < JSON.parse(Blog_data[0][5])['Tags'].length; i++) {
-        $('.tag-list').append(`<a href="javascript:void(0)" class="tag-link">${JSON.parse(Blog_data[0][5])['Tags'][i]}</a>`)
+        $('.tag-list').append(`<a href="blog.html" class="tag-link">${JSON.parse(Blog_data[0][5])['Tags'][i]}</a>`)
     }
 
     if (JSON.parse(Blog_data[0][5])['Meta_description'] != "") {
@@ -161,54 +160,6 @@ main_blog_function = () => {
 }
 
 
-add_comment = () => {
-    var Comment = $('#comment').val()
-    var Name = $('#name').val()
-    Dict = {
-        Name: Name,
-        Comment: Comment
-    }
-    comment_data = JSON.stringify(Dict)
-    $.post(root + main_route + '/submit_comment', { blog_id: blog_id, desc: comment_data }, function (data, status) {
-        console.log("Status: " + status);
-    }).done(function () {
-        alert("Comment Submitted")
-    })
-}
-
-
-view_comment = () => {
-    $.post(root + main_route + '/fetch_comments', { blog_id: blog_id }, function (data, status) {
-        console.log("Status: " + status);
-        All_Comments = data
-    }).done(function () {
-        $('.reviews').empty()
-        for (var i = 0; i < All_Comments.length; i++) {
-            $('.reviews').append(`<div class="review">
-            <div class="py-2 body-review">
-                <div class="container">
-                    <div class="d-flex align-items-center row">
-                        <div class="col-auto">
-                            <div class="name-review">${JSON.parse(All_Comments[i][3])['Name']}</div>
-                        </div>
-                        <div class="col">
-                            <div class="desc-review">${JSON.parse(All_Comments[i][3])['Comment']}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div></div>`)
-        }
-    })
-}
-
-//---------- Review Submit
-document.querySelector("#Comment_Submit").addEventListener("click", () => {
-    if (blog_id != '') {
-        add_comment()
-    }
-});
-
 
 $(document).ready(function () {
 
@@ -252,6 +203,11 @@ $(document).ready(function () {
     $('.category').on('click', function () {
         clicked_category = $(this).text()
         sessionStorage.setItem("clicked_category", clicked_category);
+    });
+
+    $('.tag-link').on('click', function () {
+        clicked_tag = $(this).text().trim();
+        sessionStorage.setItem("clicked_tag", clicked_tag);
     });
 
     if (All_Blog.length != 0) {
@@ -300,8 +256,6 @@ $(document).ready(function () {
         main_blog_function()
     })
 
-    view_comment()
-
     height = (Object.keys(distinctValues).length / 2)
     if (height > 2) {
         height = 1000
@@ -319,4 +273,44 @@ $(document).ready(function () {
             $('.Right_Col').css('min-height', height)
         }
     })
+
+    // Share on Facebook
+    $('.fb').on('click', function(e) {
+        e.preventDefault();
+        var blogUrl = encodeURIComponent(window.location.href);
+        var facebookUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + blogUrl;
+        window.open(facebookUrl, '_blank');
+    });
+
+    // Share on Twitter
+    $('.tw').on('click', function(e) {
+        e.preventDefault();
+        var blogUrl = encodeURIComponent(window.location.href);
+        var twitterUrl = 'https://twitter.com/intent/tweet?url=' + blogUrl;
+        window.open(twitterUrl, '_blank');
+    });
+
+    // Share on YouTube
+    $('.yu').on('click', function(e) {
+        e.preventDefault();
+        // Replace 'YOUR_YOUTUBE_URL_HERE' with the actual URL of your YouTube video
+        var youtubeUrl = 'https://www.youtube.com/watch?v=YOUR_YOUTUBE_URL_HERE';
+        window.open(youtubeUrl, '_blank');
+    });
+
+    // Share on LinkedIn
+    $('.li').on('click', function(e) {
+        e.preventDefault();
+        var blogUrl = encodeURIComponent(window.location.href);
+        var linkedinUrl = 'https://www.linkedin.com/shareArticle?mini=true&url=' + blogUrl;
+        window.open(linkedinUrl, '_blank');
+    });
+
+    // Share on WhatsApp
+    $('.wh').on('click', function(e) {
+        e.preventDefault();
+        var blogUrl = encodeURIComponent(window.location.href);
+        var whatsappUrl = 'https://api.whatsapp.com/send?text=' + blogUrl;
+        window.open(whatsappUrl, '_blank');
+    });
 })

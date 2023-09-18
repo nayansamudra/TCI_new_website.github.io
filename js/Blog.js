@@ -34,16 +34,6 @@ fetch_blog_list = () => {
     </div>`)
     }
 
-    function getDistinctData(arr, distinctValue) {
-        var result = [];
-        for (var i = 0; i < arr.length; i++) {
-            if (arr[i][2] === distinctValue) {
-                result.push(arr[i]);
-            }
-        }
-        return result;
-    }
-
     if (sessionStorage.getItem("clicked_category") != null) {
         distinctValue = sessionStorage.getItem("clicked_category");
         distinctData = getDistinctData(All_Blog, distinctValue);
@@ -55,48 +45,59 @@ fetch_blog_list = () => {
         distinctData = All_Blog
     }
 
-    displayBlogs = () => {
-        for (let i = 0; i < distinctData.length; i++) {
-            console.log(i)
-            $('#category_blog').append(`<div class="col-md-6 card-1 wow fadeInUp animated" data-wow-delay="100ms" data-wow-duration="800ms"
-                style="visibility: visible; animation-duration: 800ms; animation-delay: 100ms; animation-name: fadeInUp;">
-                    <div class="rt-post-overlay rt-post-overlay-md layout-6 Blog_ID" id="${distinctData[i][0]}">
-                        <div class="post-img">
-                            <a href="mainBlogPage.html" class="img-link">
-                                <img src="${distinctData[i][3]}" alt="post-xl_37" width="900" height="600">
-                            </a>
-                        </div>
-                        <div class="post-content">
-                            <a href="blog.html" class="life-style">${distinctData[i][2]}</a>
-                            <h3 class="post-title">
-                                <a href="mainBlogPage.html">${distinctData[i][1]}</a>
-                            </h3>
-                            <div class="post-meta">
-                                <ul>
-                                    <li>
-                                        <span class="rt-meta">
-                                            by <a href="" class="name">TCI</a>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span class="rt-meta">
-                                            <i class="far fa-calendar-alt icon"></i>
-                                            ${moment.unix(distinctData[i][0]).format("MMMM DD, YYYY")}
-                                        </span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-            </div>`)
-        }
-
-        $('#heading').text(distinctValue + ' Blog')
-    }
-
     displayBlogs()
 
+}
 
+// Helper Function
+function getDistinctData(arr, distinctValue) {
+    var result = [];
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i][2] === distinctValue) {
+            result.push(arr[i]);
+        }
+    }
+    return result;
+}
+
+// Displaying data
+displayBlogs = () => {
+    for (let i = 0; i < distinctData.length; i++) {
+        console.log(i)
+        $('#category_blog').append(`<div class="col-md-6 card-1 wow fadeInUp animated" data-wow-delay="100ms" data-wow-duration="800ms"
+            style="visibility: visible; animation-duration: 800ms; animation-delay: 100ms; animation-name: fadeInUp;">
+                <div class="rt-post-overlay rt-post-overlay-md layout-6 Blog_ID" id="${distinctData[i][0]}">
+                    <div class="post-img">
+                        <a href="mainBlogPage.html" class="img-link">
+                            <img src="${distinctData[i][3]}" alt="post-xl_37" width="900" height="600">
+                        </a>
+                    </div>
+                    <div class="post-content">
+                        <a href="blog.html" class="life-style">${distinctData[i][2]}</a>
+                        <h3 class="post-title">
+                            <a href="mainBlogPage.html">${distinctData[i][1]}</a>
+                        </h3>
+                        <div class="post-meta">
+                            <ul>
+                                <li>
+                                    <span class="rt-meta">
+                                        by <a href="" class="name">TCI</a>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="rt-meta">
+                                        <i class="far fa-calendar-alt icon"></i>
+                                        ${moment.unix(distinctData[i][0]).format("MMMM DD, YYYY")}
+                                    </span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+        </div>`)
+    }
+
+    $('#heading').text(distinctValue + ' Blog')
 }
 
 $(document).ready(function () {
@@ -137,16 +138,45 @@ $(document).ready(function () {
         sessionStorage.setItem("Blog_ID", Blog_ID);
     });
 
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        const searchText = document.querySelector('input').value;
-        const searchResult = window.find(searchText);
-
-        if (!searchResult) {
-            alert('No matches found');
+    setTimeout(() => {
+        if (sessionStorage.getItem("clicked_tag") != null) {
+            clicked_tag = sessionStorage.getItem("clicked_tag");
+            $('#search-input').val(clicked_tag)
+            const searchInput = document.getElementById('search-input');
+            const searchTerm = searchInput.value.toLowerCase();
+            filteredData = All_Blog.filter(item => {
+                const [id, heading, category] = item;
+                return heading.toLowerCase().includes(searchTerm) || category.toLowerCase().includes(searchTerm);
+            });
+            console.log(filteredData)
+            distinctData = filteredData
+            
+            setTimeout(() => {
+                $('#category_blog').empty()
+                displayBlogs()
+                sessionStorage.removeItem("clicked_tag")
+            }, 1000);
         }
+    }, 500);
+
+
+    // ------------ Search Box
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        filteredData = All_Blog.filter(item => {
+            const [id, heading, category] = item;
+            return heading.toLowerCase().includes(searchTerm) || category.toLowerCase().includes(searchTerm);
+        });
+
+        console.log(filteredData)
+
+        distinctData = filteredData
+
+        setTimeout(() => {
+            $('#category_blog').empty()
+            displayBlogs()
+        }, 2000);
     });
 
 })
