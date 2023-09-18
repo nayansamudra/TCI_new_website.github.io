@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="198">
+<link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-custom-link"/>
+<link xmlns="" type="text/css" rel="stylesheet" id="dark-mode-general-link"/>
+<style xmlns="" lang="en" type="text/css" id="dark-mode-custom-style"/>
+<style xmlns="" lang="en" type="text/css" id="dark-mode-native-style"/>
+<style xmlns="" lang="en" type="text/css" id="dark-mode-native-sheet"/>
+  <defs>
+    <linearGradient id="a" x1="50%" x2="50%" y1="-10.959%" y2="100%">
+      <stop stop-color="#eef2fd" stop-opacity=".25" offset="0%"/>
+      <stop stop-color="#eef2fd" offset="100%"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#a)" fill-rule="evenodd" d="M.005 121C311 121 409.898-.25 811 0c400 0 500 121 789 121v77H0s.005-48 .005-77z" transform="matrix(-1 0 0 1 1600 0)"/>
+</svg>
